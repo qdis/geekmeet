@@ -1,0 +1,52 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    authorization-service:
+        path: /authorization/**
+        url: http://geekmeet.app:5000
+        stripPrefix: false
+        sensitiveHeaders:
+
+    bookmarks-service:
+        path: /bookmark/**
+        url: http://geekmeet.app:5010
+        stripPrefix: false
+        sensitiveHeaders:
+
+    search-service:
+        path: /search/**
+        url: http://geekmeet.app:5020
+        stripPrefix: false
+        sensitiveHeaders:
+
+    admin-service:
+        path: /admin/**
+        url: http://geekmeet.app:5030
+        stripPrefix: false
+        sensitiveHeaders:
+
+    webapp:
+        path: /**
+        url: http://geekmeet.app:5050
+        stripPrefix: false
+        sensitiveHeaders:
+
+
+server:
+  port: 8080

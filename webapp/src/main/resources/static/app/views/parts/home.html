@@ -1,0 +1,88 @@
+<div flex>
+
+    <md-card class="md-padding" flex><h3
+            class="panel-title">Home
+    </h3>
+
+
+        <input ng-model="searchString" ng-model-options="{debounce: 250}">
+        <md-table-container>
+            <table md-table
+                   md-progress="home.data.promise">
+                <thead md-head md-order="home.data.query.sortColumn" md-on-reorder="home.doSearch">
+                <tr md-row>
+                    <th md-column><span>The Joke</span></th>
+                    <th md-column md-order-by="date"><span>When</span></th>
+                    <th md-column md-order-by="upVoteCount"><span translate>Up-Votes</span></th>
+                    <th md-column md-order-by="downVoteCount"><span translate>Down-Votes</span></th>
+                    <th md-column>
+                        <md-checkbox ng-model="home.data.query.bookmarked" aria-label="Bookmark"
+                                     ng-change="home.doSearch()">
+                            Bookmarks
+                        </md-checkbox>
+                    </th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row
+                    ng-repeat="joke in home.data.response.content">
+
+                    <td md-cell>
+                        {{joke.joke}}
+                    </td>
+
+                    <td md-cell>
+                        {{joke.date | date:'fullDate'}}
+                    </td>
+                    <td md-cell>
+                        {{joke.upVoteCount}}
+                        <md-button class="md-icon-button md-accent" aria-label="Thumb Up"
+                                   ng-click="home.vote(joke,'UP')"
+                                   ng-disabled="joke.upVoteUserIds.indexOf(home.user.username) >= 0">
+                            <md-icon md-font-icon="mdi mdi-thumb-up"></md-icon>
+                        </md-button>
+                    </td>
+
+                    <td md-cell>
+                        {{joke.downVoteCount}}
+                        <md-button class="md-icon-button md-accent" aria-label="Thumb Down"
+                                   ng-click="home.vote(joke,'DOWN')"
+                                   ng-disabled="joke.downVoteUserIds.indexOf(home.user.username) >= 0">
+                            <md-icon md-font-icon="mdi mdi-thumb-down"></md-icon>
+                        </md-button>
+                    </td>
+
+
+                    <td md-cell>
+                        <md-button class="md-icon-button" aria-label="Bookmark" ng-click="home.bookmark(joke)">
+                            <md-icon md-font-icon="mdi mdi-bookmark-plus" ng-if="!joke.bookmarked"></md-icon>
+                            <md-icon md-font-icon="mdi mdi-bookmark-remove" ng-if="joke.bookmarked"
+                                     class="md-accent"></md-icon>
+                        </md-button>
+                    </td>
+
+                    <td md-cell>
+                        <md-button class="md-icon-button md-accent" aria-label="Delete Joke"
+                                   ng-click="home.deleteJoke(joke)"
+                                   ng-if="home.user.isAdmin">
+                            <md-icon md-font-icon="mdi mdi-delete"></md-icon>
+                        </md-button>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+
+        <md-table-pagination md-limit="home.data.query.pageSize" md-limit-options="[10, 25, 50]"
+                             md-page="home.data.query.page"
+                             md-total="{{home.data.response.totalElements}}"
+                             md-on-paginate="home.doSearch" flex
+                             md-boundary-links="true"
+                             md-page-select></md-table-pagination>
+
+    </md-card>
+
+
+</div>

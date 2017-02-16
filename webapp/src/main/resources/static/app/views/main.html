@@ -1,0 +1,30 @@
+<md-content ng-controller="AuthenticationController as authentication"
+            ng-init="authentication.checkAuthentication()"
+            ng-show="authentication.isUserLoggedIn() || authentication.isLogin()">
+    <md-toolbar ng-show="!authentication.isLogin()">
+        <div class="md-toolbar-tools">
+            <span flex></span>
+            <md-menu>
+                <md-button aria-label="Menu" class="md-icon-button"
+                           ng-click="$mdOpenMenu(ev)">
+                    <md-icon md-menu-origin md-font-icon="mdi mdi-menu"></md-icon>
+                </md-button>
+                <md-menu-content width="3">
+                    <md-button ui-sref="main.admin" ng-show="authentication.isAdmin">
+                        <md-icon md-font-icon="mdi mdi-view-list" style="font-size: 16px; line-height: 20px;"></md-icon>
+                        <span>Admin</span>
+                    </md-button>
+                    <md-button ui-sref="main.home" ng-show="authentication.isAdmin">
+                        <md-icon md-font-icon="mdi mdi-view-list" style="font-size: 16px; line-height: 20px;"></md-icon>
+                        <span>Home</span>
+                    </md-button>
+                    <md-button ng-click="authentication.logout()">
+                        <md-icon md-font-icon="mdi mdi-logout" style="font-size: 16px; line-height: 20px;"></md-icon>
+                        <span>Logout</span>
+                    </md-button>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </md-toolbar>
+    <md-content flex class="md-padding" ui-view></md-content>
+</md-content>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+</head>
+<body ng-app="app" ng-controller="home as home">
+<h1>Login</h1>
+
+<div class="container" ng-show="!home.authenticated">
+    <div>
+        With Facebook: <a href="/login/facebook">click here</a>
+    </div>
+    <div>
+        With Google: <a href="/login/google">click here</a>
+    </div>
+</div>
+
+<div class="container" ng-show="!home.authenticated">
+
+    <h3>Register</h3>
+    <form>
+        <input ng-model="home.register.username">
+        <input ng-model="home.register.password">
+        <button ng-click="home.registerNew()" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+
+<div class="container" ng-show="!home.authenticated">
+    <h3>Login</h3>
+    <form>
+        <input ng-model="home.login.username">
+        <input ng-model="home.login.password">
+        <button ng-click="home.passwordLogin()" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+<div class="container" ng-show="home.authenticated">
+    Logged in as: <span ng-bind="home.user"></span>
+    <div>
+        <button ng-click="home.logout()" class="btn btn-primary">Logout</button>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script type="text/javascript">
+    angular
+        .module("app", [])
+        .config(
+            function ($httpProvider) {
+                $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+            }).controller("home", function ($http, $location) {
+        var self = this;
+
+        self.register = {};
+        self.login = {};
+
+        $http.get("/me").success(function (data) {
+            if(data.username) {
+                self.user = data;
+                self.authenticated = true;
+            }
+        }).error(function () {
+            self.user = "N/A";
+            self.authenticated = false;
+        });
+        self.logout = function () {
+            self.authenticated = false;
+        };
+
+        self.registerNew = function () {
+
+            var data = {};
+            data.username = self.register.username;
+            data.password = self.register.password;
+
+            $http.post('/register', data).success(function (response) {
+                console.log(response);
+                self.authenticated = false;
+                $location.path("/");
+            }).error(function (data) {
+                console.log(data);
+                console.log("Logout failed")
+                self.authenticated = false;
+            });
+
+        };
+
+
+        self.passwordLogin = function () {
+
+            var req = {
+                method: 'POST',
+                url: '/oauth/token',
+                headers: {
+                    'Authorization': "Basic " + window.btoa('authorization-server:authorization-server-secret'),
+                    "Content-Type": "application/x-www-form-urlencoded"
+
+                },
+                transformRequest: function (obj) {
+                    console.log(obj);
+                    var str = [];
+                    for (var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {
+                    grant_type: "password",
+                    username: self.login.username,
+                    password: self.login.password
+                }
+            };
+
+            $http(req).success(function (data) {
+                self.authenticated = false;
+
+                $http.get("/me?access_token="+data.access_token).success(function (data) {
+                    if(data.username) {
+                        self.user = data;
+                        self.authenticated = true;
+                    }
+                }).error(function () {
+                    self.user = "N/A";
+                    self.authenticated = false;
+                });
+
+            }).error(function (data) {
+                console.log("Logout failed")
+                self.authenticated = false;
+            });
+
+        };
+    });
+</script>
+</body>
+</html>

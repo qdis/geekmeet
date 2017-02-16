@@ -1,0 +1,37 @@
+<div flex>
+
+    <md-card class="md-padding" flex><h3
+            class="panel-title">Admin
+    </h3>
+
+        <div class="panel-body">
+
+            <md-content class="md-dialog-content">
+                <h2 class="md-title" translate>Upload some jokes :)</h2>
+                <form name="projectForm">
+                    <div layout="row" class="input-row">
+                        <md-input-container flex>
+
+                            <md-progress-linear md-mode="determinate" value="{{admin.progress}}"
+                                                ng-if="admin.uploadInProgress"></md-progress-linear>
+                            <lf-ng-md-file-input lf-files="admin.files" lf-placeholder="Files"
+                                                 lf-browse-label="Browser"
+                                                 lf-drag-and-drop-label="Drop files here ..."
+                                                 lf-remove-label="Remove" multiple drag
+                                                 progress
+                                                 ng-if="!manageFiles.data.uploadInProgress"></lf-ng-md-file-input>
+                        </md-input-container>
+                    </div>
+                </form>
+            </md-content>
+            <div class="md-actions">
+                <md-button class="md-raised md-primary" ng-click="admin.uploadFiles()" ng-disabled="admin.uploadInProgress">
+                    <span> Upload Files</span>
+                </md-button>
+            </div>
+
+        </div>
+    </md-card>
+
+
+</div>

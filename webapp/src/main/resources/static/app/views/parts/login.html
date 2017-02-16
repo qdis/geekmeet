@@ -1,0 +1,44 @@
+<div flex>
+
+    <md-card class="md-padding" flex style="width: 400px; margin: 50px auto 0;"><h3
+            class="panel-title">Login
+    </h3>
+
+        <div class="panel-body">
+
+            <div>
+                <a ng-click="login.facebook()" class="pointer">
+                    <img src="lib/img/facebook.png" width="360">
+                </a>
+                <a ng-click="login.google()" class="pointer">
+                    <img src="lib/img/google.png" width="360">
+                </a>
+            </div>
+
+
+            <h5>Login with Username & Password</h5>
+            <form role="form" ng-submit="login.withCredentials()">
+
+                <div layout="column">
+                    <md-input-container class="md-block username-container" flex>
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               ng-model="login.credentials.username"/>
+                    </md-input-container>
+                    <md-input-container class="md-block password-container" flex>
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               ng-model="login.credentials.password"/>
+                    </md-input-container>
+
+
+                    <md-button class="md-raised md-primary" type="submit">
+                        Login
+                    </md-button>
+                </div>
+            </form>
+        </div>
+    </md-card>
+
+
+</div>

@@ -1,0 +1,18 @@
+server.port: 5030
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        keyValue: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJSrJ00wVYt/wOGa7VaI+50SXIt1nsTSgZKY4YdxkwMWjBWo2QCPO62bTl/w1RnyFTtPBg+7VvGr784p1ul2M9WAiGh2OOaWPh8Q7gUuvDIveGOqy8YtV2gdADNo7xNJtc9VEjI+EEoCQ8FghBkts7ah6d5SMk5J67iT3o1uNkvVw3zVgH3AJluUgFmvChX5mtXNz5cHR3sBDoncWSFGrLO9O5ZXIUspEZDKcoj906kP/jrzX4txvveHgvHlLLkjmwUJewPLG0TTrMC5/5mO5S0JC4nqrJpSaRETcv2szt1mAMrMt5qO/2VpoPbfe8AEovxj5dClGgvFTpsDbanCT9 timobejan@Timos-MacBook-Pro.local
+
+feign.hystrix.enabled: false
+
+spring:
+    datasource:
+        url: jdbc:h2:file:/tmp/admin-service.db
+        username: admin
+        password: admin
+        driverClassName: org.h2.Driver
+    jpa:
+        hibernate.ddl-auto: update
