@@ -19,31 +19,31 @@ zuul:
   routes:
     authorization-service:
         path: /authorization/**
-        url: http://geekmeet.app:5000
+        url: http://authorization-service:5000
         stripPrefix: false
         sensitiveHeaders:
 
-    bookmarks-service:
+    bookmark-service:
         path: /bookmark/**
-        url: http://geekmeet.app:5010
+        url: http://bookmark-service:5010
         stripPrefix: false
         sensitiveHeaders:
 
     search-service:
         path: /search/**
-        url: http://geekmeet.app:5020
+        url: http://search-service:5020
         stripPrefix: false
         sensitiveHeaders:
 
     admin-service:
         path: /admin/**
-        url: http://geekmeet.app:5030
+        url: http://admin-service:5030
         stripPrefix: false
         sensitiveHeaders:
 
     webapp:
         path: /**
-        url: http://geekmeet.app:5050
+        url: http://webapp:5050
         stripPrefix: false
         sensitiveHeaders:
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webapp').controller('AuthenticationController', ['$state', 'AuthenticationService','$rootScope', function ($state, AuthenticationService, $rootScope) {
+angular.module('webapp').controller('AuthenticationController', ['$state', 'AuthenticationService', '$rootScope', function ($state, AuthenticationService, $rootScope) {
 
     var authentication = this;
 
@@ -17,6 +17,9 @@ angular.module('webapp').controller('AuthenticationController', ['$state', 'Auth
     };
 
     authentication.isUserLoggedIn = function () {
+        if (!$rootScope.user) {
+            return false;
+        }
         authentication.isAdmin = $rootScope.user.isAdmin;
         authentication.isUser = $rootScope.user.isUser;
         return authentication.isAdmin || authentication.isUser;

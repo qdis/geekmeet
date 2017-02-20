@@ -6,6 +6,7 @@ angular.module('webapp').controller('HomeController', ['$scope', '$rootScope', '
         var home = this;
 
         home.user = $rootScope.user;
+        console.log(home.user);
         home.data = {
             query: {
                 pageSize: 10,

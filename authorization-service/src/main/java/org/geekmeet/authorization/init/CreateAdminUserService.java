@@ -15,11 +15,15 @@ public class CreateAdminUserService {
 
 	@PostConstruct
 	public void postConstruct() {
-		User adminUser = new User("admin", "admin");
-		adminUser.addAuthority("ROLE_ADMIN");
-		adminUser.addAuthority("ROLE_USER");
+		try {
+			User adminUser = new User("admin", "admin");
+			adminUser.addAuthority("ROLE_ADMIN");
+			adminUser.addAuthority("ROLE_USER");
 
-		userService.registerUser(adminUser);
+			userService.registerUser(adminUser);
+		}catch (Exception e){
+			// User exists
+		}
 	}
 
 }

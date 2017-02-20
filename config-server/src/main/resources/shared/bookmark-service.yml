@@ -10,9 +10,10 @@ feign.hystrix.enabled: false
 
 spring:
     datasource:
-        url: jdbc:h2:file:/tmp/bookmark-service.db
-        username: admin
-        password: admin
-        driverClassName: org.h2.Driver
+        url: jdbc:mysql://mysql-bookmark/bookmark
+        username: root
+        password: root
+        driverClassName: com.mysql.jdbc.Driver
     jpa:
         hibernate.ddl-auto: update
+        hibernate.dialect: org.hibernate.dialect.MySQL5Dialect

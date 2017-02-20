@@ -11,7 +11,7 @@ angular.module('webapp').controller('LoginController', ['$state', '$http', '$roo
         var windowOpened = $window.open(GATEWAY + '/authorization/login/facebook', 'Authenticate', 'width=1000,height=500,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
 
         windowOpened.onbeforeunload = function () {
-            $state.go("main.home");
+            AuthenticationService.checkUserLoggedIn();
         };
 
     };
@@ -20,7 +20,7 @@ angular.module('webapp').controller('LoginController', ['$state', '$http', '$roo
         var windowOpened = $window.open(GATEWAY + '/authorization/login/google', 'Authenticate', 'width=1000,height=500,location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
 
         windowOpened.onbeforeunload = function () {
-            $state.go("main.home");
+            AuthenticationService.checkUserLoggedIn();
         };
 
     };

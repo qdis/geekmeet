@@ -46,6 +46,8 @@ public class BookmarkController {
 	@RequestMapping(method = RequestMethod.GET, path = "/mine")
 	@Cacheable(cacheNames = "bookmarks", key = "#principal.name")
 	public ResponseEntity<List<String>> getBookmarkedDocuments(Principal principal) {
+		LOGGER.info("requesting bookmarks for : "+principal.getName());
+		LOGGER.info(bookmarkRepository.findByUsername(principal.getName()).toString());
 		return new ResponseEntity<>(bookmarkRepository.findByUsername(principal.getName()).stream()
 				.map(b -> b.getBookmarkKey().getDocumentId()).collect(Collectors.toList()), HttpStatus.OK);
 	}

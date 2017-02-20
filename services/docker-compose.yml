@@ -1,0 +1,150 @@
+version: '3'
+services:
+
+  config-server:
+    image: geekmeet22/config-server
+    restart: always
+    networks:
+      basic:
+        aliases:
+          - config
+    ports:
+      - 8888:8888
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  service-registry:
+    image: geekmeet22/service-registry
+    restart: always
+    depends_on:
+      - config-server
+    networks:
+      basic:
+    ports:
+      - 8761:8761
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  service-gateway:
+    image: geekmeet22/service-gateway
+    restart: always
+    depends_on:
+      - config-server
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 80:8080
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  admin-service:
+    image: geekmeet22/admin-service
+    restart: always
+    depends_on:
+      - config-server
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 5030:5030
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  authorization-service:
+    image: geekmeet22/authorization-service
+    restart: always
+    depends_on:
+      - mysql-authorization
+      - config-server
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 5000:5000
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  search-service:
+    image: geekmeet22/search-service
+    restart: always
+    depends_on:
+      - config-server
+      - elasticsearch-search
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 5020:5020
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  bookmark-service:
+    image: geekmeet22/bookmark-service
+    restart: always
+    depends_on:
+      - mysql-bookmark
+      - config-server
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 5010:5010
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  webapp:
+    image: geekmeet22/webapp
+    restart: always
+    depends_on:
+      - config-server
+      - service-registry
+    networks:
+      basic:
+    ports:
+      - 5050:5050
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: any
+
+  mysql-bookmark:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookmark
+    image: mysql:5.7
+    networks:
+      basic:
+    restart: always
+
+  mysql-authorization:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: authorization
+    image: mysql:5.7
+    networks:
+      basic:
+    restart: always
+
+  elasticsearch-search:
+    image: elasticsearch:2.4
+    networks:
+      basic:
+    restart: always
+
+networks:
+  basic:
